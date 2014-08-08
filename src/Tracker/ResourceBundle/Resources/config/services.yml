@@ -1,0 +1,7 @@
+parameters:
+
+    tracker.controller.resource.class: Tracker\ResourceBundle\Controller\ResourceController
+
+services:
+    tracker.resource.controller:
+        class: "%tracker.controller.resource.class%"

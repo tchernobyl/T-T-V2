@@ -1,0 +1,7 @@
+parameters:
+#    tracker_company.example.class: Tracker\CompanyBundle\Example
+
+services:
+#    tracker_company.example:
+#        class: %tracker_company.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

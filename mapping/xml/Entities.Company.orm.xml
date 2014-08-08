@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Entities\Company" table="Company">
+    <indexes>
+      <index name="IDX_800230D38D93D649" columns="user"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nameCompany" type="string" column="name_company" length="255" nullable="false"/>
+    <field name="descriptionCompany" type="string" column="description_company" length="255" nullable="false"/>
+    <field name="addressCompany" type="string" column="address_company" length="255" nullable="false"/>
+    <field name="phoneCompany" type="string" column="phone_company" length="255" nullable="false"/>
+    <many-to-one field="user" target-entity="Entities\User">
+      <join-columns>
+        <join-column name="user" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

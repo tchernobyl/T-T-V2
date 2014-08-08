@@ -1,0 +1,4 @@
+
+users:
+    type:     rest
+    resource: Tracker\UserBundle\Controller\UserController

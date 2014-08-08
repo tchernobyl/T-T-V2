@@ -1,0 +1,12 @@
+
+tracker_session:
+    type:     rest
+    resource: Tracker\TrackerApiBundle\Controller\TrackerSessionController
+
+session_tracker:
+    type:     rest
+    resource: Tracker\TrackerApiBundle\Controller\SessionTrackerController
+tracker:
+    type:     rest
+    resource: Tracker\TrackerApiBundle\Controller\TrackerController
+    prefix:   /ooo

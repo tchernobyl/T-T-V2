@@ -1,0 +1,56 @@
+Entities\Company:
+    type: entity
+    table: Company
+    indexes:
+        IDX_800230D38D93D649:
+            columns:
+                - user
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nameCompany:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+            column: name_company
+        descriptionCompany:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+            column: description_company
+        addressCompany:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+            column: address_company
+        phoneCompany:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+            column: phone_company
+    manyToOne:
+        user:
+            targetEntity: Entities\User
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

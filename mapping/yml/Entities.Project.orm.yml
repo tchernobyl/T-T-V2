@@ -1,0 +1,66 @@
+Entities\Project:
+    type: entity
+    table: Project
+    indexes:
+        IDX_E00EE972979B1AD6:
+            columns:
+                - company_id
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        userEmployer:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+            column: user_employer
+        title:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+        description:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+        dateConvention:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: date_convention
+        dateEnd:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: date_End
+        enabled:
+            type: boolean
+            nullable: false
+            comment: ''
+        image:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+    manyToOne:
+        company:
+            targetEntity: Entities\Company
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                company_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,6 @@
+tracker_project_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: TrackerProjectBundle:Default:index }
+project:
+    type:     rest
+    resource: Tracker\ProjectBundle\Controller\ProjectController

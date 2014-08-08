@@ -1,0 +1,9 @@
+
+companies:
+    type:     rest
+    resource: Tracker\CompanyBundle\Controller\CompanyController
+    prefix:  aa
+information_show_sessiontracker:
+   pattern:  /tttt
+   defaults: { _controller: TrackerCompanyBundle:Company:getCompany, _format: json }
+   methods:   [Get]

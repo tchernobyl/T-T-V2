@@ -1,0 +1,6 @@
+
+companies_api:
+
+    type:     rest
+    resource: Tracker\CompanyBundle\Controller\CompanyController
+    prefix:  bb
