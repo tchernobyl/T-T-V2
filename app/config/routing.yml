@@ -1,3 +1,4 @@
+
 tracker_tracker_api:
     resource: "@TrackerTrackerApiBundle/Resources/config/routing.yml"
     prefix:   /
@@ -17,11 +18,6 @@ tracker_user:
 tracker_company:
     resource: "@TrackerCompanyBundle/Resources/config/routing.yml"
     prefix:   /
-
-tracker_company_api:
-    resource: "@TrackerCompanyBundle/Resources/config/api_routing.yml"
-    prefix:   /
-
 
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"

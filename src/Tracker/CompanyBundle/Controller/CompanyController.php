@@ -3,6 +3,7 @@
 namespace Tracker\CompanyBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Util\Codes;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,26 +20,18 @@ use Tracker\CompanyBundle\Entity\Company;
 use Tracker\ResourceBundle\Controller\ResourceController;
 
 
-
-/**
- * Tracker controller.
- *
- * @Route("/azzz")
- */
 class CompanyController extends ResourceController
 {
     /**
      * @param ParamFetcher $paramFetcher
      * @QueryParam(name="pageSize")
      * @QueryParam(name="page")
-     *@Route("/ttt", name="tracker")
-     * @Method("GET")
      * @return View
      */
     public function getCompaniesAction(ParamFetcher $paramFetcher)
     {
 
-        $CompaniesFound=$this->findAll($paramFetcher,$this->getRepository());
+        $CompaniesFound = $this->findAll($paramFetcher, $this->getRepository());
 
         $view = View::create()->setStatusCode(200)
             ->setData(array('Companies' => $CompaniesFound));
@@ -47,6 +40,7 @@ class CompanyController extends ResourceController
 
 
     }
+
     /**
      *
      * @param ParamFetcher $paramFetcher
@@ -55,23 +49,29 @@ class CompanyController extends ResourceController
      */
     public function getCompanyAction(ParamFetcher $paramFetcher)
     {
+        if (!$paramFetcher->get('id')) {
 
+            return $this->handleView(
+                $this->view(array("response" => "Not found"), Codes::HTTP_NOT_FOUND)
+            );
+        }
 
-        $CompaniesFound=$this->findOneById($paramFetcher,$this->getRepository());
+        $CompaniesFound = $this->findOneById($paramFetcher, $this->getRepository());
         $view = View::create()->setStatusCode(200)
             ->setData(array('Companies' => $CompaniesFound));
         return $this->getViewHandler()->handle($view);
     }
+
     /**
-     *@param Request $request
+     * @param Request $request
      * @return View
      */
     public function postCompaniesAction(Request $request)
     {
 
-        $company=$this->createNew($request,$this->getRepository());
+        $company = $this->createNew($request, $this->getRepository());
         $view = View::create()->setStatusCode(200)
-            ->setData(array('Company' =>$company));
+            ->setData(array('Company' => $company));
         return $this->getViewHandler()->handle($view);
     }
 
@@ -81,16 +81,18 @@ class CompanyController extends ResourceController
      * @QueryParam(name="id")
      * @return View
      */
-    public function putCompanyAction(Request $request,ParamFetcher $paramFetcher){
-        $CompanyFromDb=$this->update($request,$paramFetcher,$this->getRepository());
+    public function putCompanyAction(Request $request, ParamFetcher $paramFetcher)
+    {
+        $CompanyFromDb = $this->update($request, $paramFetcher, $this->getRepository());
         $view = View::create()->setStatusCode(200)
-            ->setData(array('Company' =>$CompanyFromDb));
+            ->setData(array('Company' => $CompanyFromDb));
         return $this->getViewHandler()->handle($view);
 
     }
 
 
-    private function getRepository(){
+    private function getRepository()
+    {
         return 'Tracker\CompanyBundle\Entity\Company';
     }
 }

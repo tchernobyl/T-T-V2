@@ -27,23 +27,22 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         oauth_token:
-            pattern:    ^/ooo
-            stateless: true
-            simple_preauth:
-                authenticator: apikey_authenticator
+            pattern:    ^/oauth/v2/token
+            security:   false
 
         main:
             pattern: ^/
+            fos_oauth:  true
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
             logout:       true
             anonymous:    true
 
-
-
-
     access_control:
-        - { path: ^/ooo, roles: [ IS_AUTHENTICATED_FULLY  ] }
-        - { path: ^/iii, roles: [ IS_AUTHENTICATED_FULLY  ] }
+
+        - { path: ^/companies, roles: [ ROLE_USER  ] }
+        - { path: ^/company, roles: [ ROLE_USER  ] }
+        - { path: ^/api, roles: [ ROLE_USER ] }

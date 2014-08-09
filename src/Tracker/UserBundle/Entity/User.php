@@ -6,14 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\MessageBundle\Model\ParticipantInterface;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * User
  * @ORM\Entity(repositoryClass="Tracker\UserBundle\Repository\UserRepository")
  * @ORM\Table()
  * @ORM\Entity()
-
  */
-class User extends BaseUser implements  UserInterface, \Serializable
+class User extends BaseUser implements UserInterface, \Serializable
 {
 
     /**
@@ -47,7 +47,7 @@ class User extends BaseUser implements  UserInterface, \Serializable
 
     /**
      * @var string
-     * @ORM\Column(name="api_key", type="string",nullable=false)
+     * @ORM\Column(name="api_key", type="string",nullable=true)
      */
     private $apiKey;
 
@@ -166,6 +166,7 @@ class User extends BaseUser implements  UserInterface, \Serializable
     {
         return $this->lastName;
     }
+
     public function setOptions(array $options)
     {
         $_classMethods = get_class_methods($this);
@@ -181,7 +182,8 @@ class User extends BaseUser implements  UserInterface, \Serializable
         return $this;
     }
 
-    public function setOption($key, $value){
+    public function setOption($key, $value)
+    {
         return $this->setOptions(array($key, $value));
     }
 

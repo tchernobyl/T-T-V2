@@ -9,4 +9,4 @@ session_tracker:
 tracker:
     type:     rest
     resource: Tracker\TrackerApiBundle\Controller\TrackerController
-    prefix:   /ooo
+    prefix:   /

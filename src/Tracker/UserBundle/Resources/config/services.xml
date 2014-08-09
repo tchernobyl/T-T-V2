@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
         <parameter key="platform.entity.user.class">Tracker\UserBundle\Entity\User</parameter>
@@ -22,11 +22,11 @@
         </service>
 
         <service id="platform.user.provider" class="%platform.user.provider.class%">
-            <argument type="service" id="platform.user.repository" />
+            <argument type="service" id="platform.user.repository"/>
         </service>
 
         <service id="platform.grant_type.api_key" class="Tracker\UserBundle\OAuth\ApiKeyGrantExtension">
-            <tag name="fos_oauth_server.grant_extension" uri="http://platform.local/grants/api_key" />
+            <tag name="fos_oauth_server.grant_extension" uri="http://symfony.test/grants/api_key"/>
             <argument type="service" id="platform.user.repository"/>
         </service>
     </services>

@@ -33,11 +33,11 @@ class ResourceController extends FOSRestController
      * @param $repository
      * @return mixed
      */
-    public function findOneById(ParamFetcher $paramFetcher,$repository)
+    public function findOneById(ParamFetcher $paramFetcher, $repository)
     {
         $em = $this->getDoctrine()->getManager();
 
-        return  $em->getRepository($repository)->findById($paramFetcher->get('id'));
+        return $em->getRepository($repository)->findById($paramFetcher->get('id'));
     }
 
     /**
@@ -46,28 +46,28 @@ class ResourceController extends FOSRestController
      * @param string $format
      * @return object
      */
-    public function createNew(Request $request,$repository,$format="json"){
+    public function createNew(Request $request, $repository, $format = "json")
+    {
         $normalizer = new GetSetMethodNormalizer();
         $encoder = new JsonEncoder();
         $serializer = new Serializer(array($normalizer), array($encoder));
 
-        $objectFromContent = $serializer->deserialize($request->getContent(),$repository,$format);
+        $objectFromContent = $serializer->deserialize($request->getContent(), $repository, $format);
 
-        $relations=$objectFromContent->Relations();
+        $relations = $objectFromContent->Relations();
 
-        while ( current($relations)) {
+        while (current($relations)) {
             $em = $this->getDoctrine()->getManager();
-            $method=key($relations);
-            $getMethod="get".$method;
-            $setMethod="set".$method;
-            $repository=$relations[key($relations)]["Repository"];
+            $method = key($relations);
+            $getMethod = "get" . $method;
+            $setMethod = "set" . $method;
+            $repository = $relations[key($relations)]["Repository"];
 
-          $ObjectFromDb = $em->getRepository($repository)->find($objectFromContent->$getMethod());
-          $objectFromContent->$setMethod($ObjectFromDb);
+            $ObjectFromDb = $em->getRepository($repository)->find($objectFromContent->$getMethod());
+            $objectFromContent->$setMethod($ObjectFromDb);
 
             next($relations);
         }
-
 
 
         $em = $this->getDoctrine()->getManager();
@@ -77,24 +77,24 @@ class ResourceController extends FOSRestController
         $em->flush();
         return $objectFromContent;
     }
-    public function update(Request $request,ParamFetcher $paramFetcher,$repository,$format="json"){
+
+    public function update(Request $request, ParamFetcher $paramFetcher, $repository, $format = "json")
+    {
 
         $id = $paramFetcher->get('id');
         $em = $this->getDoctrine()->getManager();
         $ObjectFromDb = $em->getRepository($repository)->find($id);
         $data = json_decode($request->getContent(), true);
-        while ( current($data)) {
-            $ObjectFromDb->setOption(key($data),$data[key($data)]);
+        while (current($data)) {
+            $ObjectFromDb->setOption(key($data), $data[key($data)]);
             next($data);
         }
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
 
-
         return $ObjectFromDb;
     }
-
 
 
     /**
@@ -108,10 +108,12 @@ class ResourceController extends FOSRestController
     /**
      * @return array
      */
-    public function UserfromtokenAction(){
+    public function UserfromtokenAction()
+    {
 
-
-        return array("4"=>"ddd");
+        var_dump(array("4" => "ddd"));
+        exit;
+        return array("4" => "ddd");
     }
 
 }
