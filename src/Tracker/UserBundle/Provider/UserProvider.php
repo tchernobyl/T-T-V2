@@ -14,7 +14,8 @@ class UserProvider implements UserProviderInterface
 {
     protected $userRepository;
 
-    public function __construct(ObjectRepository $userRepository){
+    public function __construct(ObjectRepository $userRepository)
+    {
         $this->userRepository = $userRepository;
     }
 

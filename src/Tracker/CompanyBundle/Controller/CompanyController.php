@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -32,10 +33,8 @@ class CompanyController extends ResourceController
     {
 
         $CompaniesFound = $this->findAll($paramFetcher, $this->getRepository());
-
         $view = View::create()->setStatusCode(200)
             ->setData(array('Companies' => $CompaniesFound));
-
         return $this->getViewHandler()->handle($view);
 
 
@@ -68,8 +67,11 @@ class CompanyController extends ResourceController
      */
     public function postCompaniesAction(Request $request)
     {
-
         $company = $this->createNew($request, $this->getRepository());
+
+        $this->createOwnerRole($company);
+
+
         $view = View::create()->setStatusCode(200)
             ->setData(array('Company' => $company));
         return $this->getViewHandler()->handle($view);
@@ -90,6 +92,38 @@ class CompanyController extends ResourceController
 
     }
 
+
+    /**
+     * @param ParamFetcher $paramFetcher
+     * @QueryParam(name="id_object")
+     * @QueryParam(name="id_user")
+     * @QueryParam(name="role")
+     * @return View
+     */
+    public function postCompanyRoleAction(ParamFetcher $paramFetcher)
+    {
+
+//        $identity = new UserSecurityIdentity($userName, 'Tracker\UserBundle\Entity\User');
+        $result = $this->addRoleForUserInObject($paramFetcher, $this->getRepository());
+
+        $view = View::create()->setStatusCode(200)
+            ->setData(array('Company' => $result));
+        return $this->getViewHandler()->handle($view);
+    }
+
+    /**
+     * Lists all Company entities.
+     *
+     */
+    public function getCreateAction()
+    {
+        $view = View::create()->setStatusCode(200)
+
+            ->setTemplate('TrackerCompanyBundle:Company:create.html.twig')
+            ->setData(array('Users' => "ddd"));
+        return $this->getViewHandler()->handle($view);
+
+    }
 
     private function getRepository()
     {

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProjectType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -22,18 +22,19 @@ class ProjectType extends AbstractType
             ->add('dateEnd')
             ->add('enabled')
             ->add('image')
-            ->add('company')
-        ;
+            ->add('company');
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Tracker\ProjectBundle\Entity\Project'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Tracker\ProjectBundle\Entity\Project'
+            )
+        );
     }
 
     /**

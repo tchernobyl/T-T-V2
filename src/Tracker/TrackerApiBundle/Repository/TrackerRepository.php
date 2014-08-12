@@ -2,10 +2,12 @@
 
 
 namespace Tracker\TrackerApiBundle\Repository;
+
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-class TrackerRepository extends BaseEntityRepository {
+class TrackerRepository extends BaseEntityRepository
+{
 
     /**
      * {@inheritdoc}
@@ -13,7 +15,8 @@ class TrackerRepository extends BaseEntityRepository {
     public function saveTracker()
     {
 
-echo 666;exit;
-        return null ;
+        echo 666;
+        exit;
+        return null;
     }
 }

@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Tracker\UserBundle\Security\ApplicationBoot;
+
 class ApiKeyUserProvider implements UserProviderInterface
 {
 
@@ -19,12 +20,14 @@ class ApiKeyUserProvider implements UserProviderInterface
     {
         $container = ApplicationBoot::getContainer();
         $entityManager = $container->get('doctrine')->getEntityManager();
-        $UserFound=$entityManager->getRepository('Tracker\UserBundle\Entity\User')->findBy(array("apiKey"=>$apiKey));
-        if($UserFound){
-            /**@var $user User*/
-            $user= $UserFound[0];
+        $UserFound = $entityManager->getRepository('Tracker\UserBundle\Entity\User')->findBy(
+            array("apiKey" => $apiKey)
+        );
+        if ($UserFound) {
+            /**@var $user User */
+            $user = $UserFound[0];
             $username = $user->getUsername();
-            }else{
+        } else {
             $username = null;
         }
         return $username;
@@ -35,10 +38,12 @@ class ApiKeyUserProvider implements UserProviderInterface
         $container = ApplicationBoot::getContainer();
         $entityManager = $container->get('doctrine')->getEntityManager();
 
-        $UserFound=$entityManager->getRepository('Tracker\UserBundle\Entity\User')->findBy(array("username"=>$username));
+        $UserFound = $entityManager->getRepository('Tracker\UserBundle\Entity\User')->findBy(
+            array("username" => $username)
+        );
 
-        /**@var $user User*/
-        $user=$UserFound[0];
+        /**@var $user User */
+        $user = $UserFound[0];
 
         return new User(
             $username,

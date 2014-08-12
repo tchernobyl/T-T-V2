@@ -1,3 +1,7 @@
+tracker_role:
+    resource: "@TrackerRoleBundle/Resources/config/routing.yml"
+    prefix:   /
+
 
 tracker_tracker_api:
     resource: "@TrackerTrackerApiBundle/Resources/config/routing.yml"

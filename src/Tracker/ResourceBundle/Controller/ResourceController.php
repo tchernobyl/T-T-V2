@@ -2,8 +2,13 @@
 
 namespace Tracker\ResourceBundle\Controller;
 
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -19,6 +24,7 @@ class ResourceController extends FOSRestController
      */
     public function findAll(ParamFetcher $paramFetcher, $repository)
     {
+
         $pageSize = $paramFetcher->get("pageSize");
         $page = $paramFetcher->get("page");
         $repository = $this->getDoctrine()
@@ -62,10 +68,8 @@ class ResourceController extends FOSRestController
             $getMethod = "get" . $method;
             $setMethod = "set" . $method;
             $repository = $relations[key($relations)]["Repository"];
-
             $ObjectFromDb = $em->getRepository($repository)->find($objectFromContent->$getMethod());
             $objectFromContent->$setMethod($ObjectFromDb);
-
             next($relations);
         }
 
@@ -75,6 +79,7 @@ class ResourceController extends FOSRestController
 
         $em->persist($objectFromContent);
         $em->flush();
+
         return $objectFromContent;
     }
 
@@ -84,6 +89,12 @@ class ResourceController extends FOSRestController
         $id = $paramFetcher->get('id');
         $em = $this->getDoctrine()->getManager();
         $ObjectFromDb = $em->getRepository($repository)->find($id);
+        $securityContext = $this->get('security.context');
+
+
+        if (false === $securityContext->isGranted('EDIT', $ObjectFromDb)) {
+            throw new AccessDeniedException();
+        }
         $data = json_decode($request->getContent(), true);
         while (current($data)) {
             $ObjectFromDb->setOption(key($data), $data[key($data)]);
@@ -98,22 +109,99 @@ class ResourceController extends FOSRestController
 
 
     /**
+     * @param $object
+     */
+    public function createOwnerRole($object)
+    {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        /** creating the ACL**/
+        $aclProvider = $this->get('security.acl.provider');
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        $acl = $aclProvider->createAcl($objectIdentity);
+        /**  retrieving the security identity of the currently logged-in user **/
+        $securityIdentity = UserSecurityIdentity::fromAccount($user);
+        /** grant owner access**/
+        $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+        $aclProvider->updateAcl($acl);
+    }
+
+    /**
+     * @param ParamFetcher $paramFetcher
+     * @QueryParam(name="id_object")
+     * @QueryParam(name="id_user")
+     * @QueryParam(name="role")
+     * @param $repository
+     * @return array
+     */
+    public function addRoleForUserInObject(ParamFetcher $paramFetcher, $repository)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('Tracker\UserBundle\Entity\User')->find($paramFetcher->get('id_user'));
+        $object = $em->getRepository($repository)->find($paramFetcher->get('id_object'));
+        $role = $paramFetcher->get('role');
+        /** creating the ACL**/
+        $aclProvider = $this->get('security.acl.provider');
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        $acl = $aclProvider->createAcl($objectIdentity);
+        /**  retrieving the security identity of the currently logged-in user **/
+        $securityIdentity = UserSecurityIdentity::fromAccount($user);
+        /** grant owner access**/
+        $acl->insertObjectAce($securityIdentity, 32);
+        $aclProvider->updateAcl($acl);
+        return array("Status" => "OK");
+    }
+
+    /**
+     * @param $CompanyFound
+     * @param $user
+     * @return bool
+     */
+    private function VerifyExistingRelationUserCompany($CompanyFound, $user)
+    {
+        //TODO correct this function and complete the whole of the api related with the ACLS
+        $em = $this->getDoctrine()->getManager();
+
+        $IdObject = ObjectIdentity::fromDomainObject($CompanyFound);
+        $acl = $this->get('security.acl.provider')->findAcl($IdObject);
+        $aces = $acl->getObjectAces();
+        $result = false;
+
+        foreach ($aces as $i => $ace) {
+
+            $username = $ace->getSecurityIdentity()->getuserName();
+            $usr = $em->getRepository('TimeTrackerBundle:User')->findBy(
+                array('username' => $username)
+            );
+            if ($usr) {
+                if ($user == $usr[0]) {
+
+
+                    $result = true;
+                    break;
+                }
+            }
+
+        }
+
+        return $result;
+    }
+
+
+    public function RetrivingObjectAcl()
+    {
+//        $thread = "";
+//
+//        $provider =$container->get('security.acl.provider');
+//
+//        $acl = $provider->findAcl(ObjectIdentity::fromDomainObject($thread));
+    }
+
+
+    /**
      * @return \FOS\RestBundle\View\ViewHandler
      */
     public function getViewHandler()
     {
         return $this->container->get('fos_rest.view_handler');
     }
-
-    /**
-     * @return array
-     */
-    public function UserfromtokenAction()
-    {
-
-        var_dump(array("4" => "ddd"));
-        exit;
-        return array("4" => "ddd");
-    }
-
 }

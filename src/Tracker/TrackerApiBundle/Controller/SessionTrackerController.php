@@ -22,20 +22,22 @@ class SessionTrackerController extends ResourceController
      * @QueryParam(name="page")
      * @return View
      */
-public function getSessionsTrackersAction(ParamFetcher $paramFetcher){
+    public function getSessionsTrackersAction(ParamFetcher $paramFetcher)
+    {
 
-    $TrackerFound=$this->findAll($paramFetcher,$this->getRepository());
-    $view = View::create()->setStatusCode(200)
-        ->setData(array('SessionTracker' => $TrackerFound));
+        $TrackerFound = $this->findAll($paramFetcher, $this->getRepository());
+        $view = View::create()->setStatusCode(200)
+            ->setData(array('SessionTracker' => $TrackerFound));
 
-    return $this->getViewHandler()->handle($view);
-}
-
-
-    public function postSessionsTrackersAction(Request $request){
+        return $this->getViewHandler()->handle($view);
+    }
 
 
-        $Trackers=$this->createNew($request,$this->getRepository());
+    public function postSessionsTrackersAction(Request $request)
+    {
+
+
+        $Trackers = $this->createNew($request, $this->getRepository());
 
         $view = View::create()->setStatusCode(200)
             ->setData(array('SessionTracker' => $Trackers));
@@ -43,7 +45,8 @@ public function getSessionsTrackersAction(ParamFetcher $paramFetcher){
         return $this->getViewHandler()->handle($view);
     }
 
-    private function getRepository(){
+    private function getRepository()
+    {
         return 'Tracker\TrackerApiBundle\Entity\SessionTracker';
     }
 }

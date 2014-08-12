@@ -22,22 +22,24 @@ class TrackerController extends ResourceController
      * @QueryParam(name="page")
      * @return View
      */
-public function getTrackersAction(ParamFetcher $paramFetcher){
+    public function getTrackersAction(ParamFetcher $paramFetcher)
+    {
 
-    $TrackerFound=$this->findAll($paramFetcher,$this->getRepository());
-    $view = View::create()
-        ->setStatusCode(200)
-    ->setTemplate("rrr")
-        ->setData(array('Trackers' => $TrackerFound));
+        $TrackerFound = $this->findAll($paramFetcher, $this->getRepository());
+        $view = View::create()
+            ->setStatusCode(200)
+            ->setTemplate("rrr.html")
+            ->setData(array('Trackers' => $TrackerFound));
 
-    return $this->getViewHandler()->handle($view);
-}
-
-
-    public function postTrackerAction(Request $request){
+        return $this->getViewHandler()->handle($view);
+    }
 
 
-        $Trackers=$this->createNew($request,$this->getRepository());
+    public function postTrackerAction(Request $request)
+    {
+
+
+        $Trackers = $this->createNew($request, $this->getRepository());
 
         $view = View::create()->setStatusCode(200)
             ->setData(array('Tracker' => $Trackers));
@@ -45,7 +47,8 @@ public function getTrackersAction(ParamFetcher $paramFetcher){
         return $this->getViewHandler()->handle($view);
     }
 
-    private function getRepository(){
+    private function getRepository()
+    {
         return 'Tracker\TrackerApiBundle\Entity\Tracker';
     }
 }

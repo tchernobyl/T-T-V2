@@ -25,7 +25,7 @@ class AppKernel extends Kernel
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Tracker\ResourceBundle\TrackerResourceBundle(),
             new Tracker\TrackerApiBundle\TrackerTrackerApiBundle(),
-
+            new Tracker\RoleBundle\TrackerRoleBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

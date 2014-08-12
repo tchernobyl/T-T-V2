@@ -10,8 +10,10 @@
 namespace Tracker\ProjectBundle\Controller;
 
 
-class functions {
-    public function function1(){
+class functions
+{
+    public function function1()
+    {
 
     }
 

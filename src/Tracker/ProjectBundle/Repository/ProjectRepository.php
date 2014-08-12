@@ -2,10 +2,12 @@
 
 
 namespace Tracker\ProjectBundle\Repository;
+
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-class ProjectRepository extends BaseEntityRepository {
+class ProjectRepository extends BaseEntityRepository
+{
 
     /**
      * {@inheritdoc}
@@ -13,7 +15,8 @@ class ProjectRepository extends BaseEntityRepository {
     public function testFirstFunction()
     {
 
-echo "rrr";exit;
-        return null ;
+        echo "rrr";
+        exit;
+        return null;
     }
 }

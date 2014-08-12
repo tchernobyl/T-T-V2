@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\HttpFoundation\Response;
+
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
 {
     protected $userProvider;
@@ -42,7 +43,7 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
                 sprintf('API Key "%s" does not exist.', $apiKey)
             );
         }
-        /**@var $user \Tracker\UserBundle\Entity\User*/
+        /**@var $user \Tracker\UserBundle\Entity\User */
         $user = $this->userProvider->loadUserByUsername($username);
 
         return new PreAuthenticatedToken(

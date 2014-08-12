@@ -1,0 +1,3 @@
+tracker_role_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: TrackerRoleBundle:Default:index }

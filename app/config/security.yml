@@ -40,7 +40,8 @@ security:
                 csrf_provider: form.csrf_provider
             logout:       true
             anonymous:    true
-
+    acl:
+        connection: default
     access_control:
 
         - { path: ^/companies, roles: [ ROLE_USER  ] }

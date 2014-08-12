@@ -1,6 +1,6 @@
 <?php
 
-namespace Tracker\TrackerApiBundle\Tests\Controller;
+namespace Tracker\RoleBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
